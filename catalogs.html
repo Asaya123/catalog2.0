@@ -3,111 +3,891 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product Catalog</title>
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+    <title>Lego Product Catalog</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2846a7;
+            --secondary-color: #217888;
+            --light-bg: #f5f5f5;
+            --light-text: #333;
+            --light-card: #fff;
+            --dark-bg: #121212;
+            --dark-card: #1e1e1e;
+            --dark-text: #fff;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --dark-shadow: 0 4px 6px rgba(255, 255, 255, 0.1);
+            --cart-bg: #f8f9fa;
+            --dark-cart-bg: #333;
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+        }
 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--light-text);
+            transition: all 0.3s ease;
+        }
+
+        .dark-mode {
+            background-color: var(--dark-bg);
+            color: var(--dark-text);
+        }
+
+        header {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--primary-color);
+            color: white;
+            box-shadow: var(--shadow);
+        }
+
+        .header-title {
+            font-family: 'Lobster', cursive;
+            font-size: 2rem;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .dark-mode button {
+            background-color: #444;
+        }
+
+        .dark-mode button:hover {
+            background-color: #666;
+        }
+
+        #main-container {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 20px;
+            gap: 20px;
+        }
+
+        #product-list {
+            flex: 3;
+            min-width: 300px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .available-products {
+            grid-column: 1 / -1;
+            margin-bottom: 10px;
+        }
+
+        .product {
+            background-color: var(--light-card);
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product:hover {
+            transform: translateY(-5px);
+        }
+
+        .dark-mode .product {
+            background-color: var(--dark-card);
+            box-shadow: var(--dark-shadow);
+        }
+
+        .product img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .product h3 {
+            margin: 10px 0;
+            font-size: 1.2rem;
+        }
+
+        .product p {
+            margin: 5px 0;
+            font-size: 0.9rem;
+            flex-grow: 1;
+        }
+
+        .product .price {
+            font-weight: bold;
+            color: var(--primary-color);
+            font-size: 1.1rem;
+        }
+
+        .dark-mode .product .price {
+            color: var(--secondary-color);
+        }
+
+        .add-to-cart {
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        #sidebar {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        #cart_section {
+            background-color: var(--cart-bg);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+        }
+
+        .dark-mode #cart_section {
+            background-color: var(--dark-cart-bg);
+        }
+
+        #cart_section h2 {
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+
+        .dark-mode #cart_section h2 {
+            color: var(--secondary-color);
+        }
+
+        #itemsincart {
+            list-style: none;
+            margin-bottom: 15px;
+        }
+
+        #itemsincart li {
+            padding: 8px 0;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .dark-mode #itemsincart li {
+            border-bottom: 1px solid #555;
+        }
+
+        #total {
+            font-weight: bold;
+            font-size: 1.2rem;
+            text-align: right;
+            padding: 10px 0;
+        }
+
+        .timer-section {
+            background-color: var(--light-card);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+        }
+
+        .dark-mode .timer-section {
+            background-color: var(--dark-card);
+        }
+
+        .timer-section h2 {
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+
+        .dark-mode .timer-section h2 {
+            color: var(--secondary-color);
+        }
+
+        .timer-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .timer-controls input {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            flex-grow: 1;
+        }
+
+        .dark-mode .timer-controls input {
+            background-color: #333;
+            color: white;
+            border-color: #555;
+        }
+
+        #timer-display {
+            font-size: 2rem;
+            text-align: center;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .table-section {
+            background-color: var(--light-card);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+        }
+
+        .dark-mode .table-section {
+            background-color: var(--dark-card);
+        }
+
+        .table-section h2 {
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+
+        .dark-mode .table-section h2 {
+            color: var(--secondary-color);
+        }
+
+        #data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+        }
+
+        #data-table th, #data-table td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        .dark-mode #data-table th, 
+        .dark-mode #data-table td {
+            border: 1px solid #555;
+        }
+
+        #data-table th {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .dark-mode #data-table th {
+            background-color: #444;
+        }
+
+        .table-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .table-controls input {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            flex-grow: 1;
+        }
+
+        .dark-mode .table-controls input {
+            background-color: #333;
+            color: white;
+            border-color: #555;
+        }
+
+        .gallery-section {
+            background-color: var(--light-card);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+        }
+
+        .dark-mode .gallery-section {
+            background-color: var(--dark-card);
+        }
+
+        .gallery-section h2 {
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+
+        .dark-mode .gallery-section h2 {
+            color: var(--secondary-color);
+        }
+
+        .thumbnail-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .thumbnail {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .thumbnail:hover {
+            transform: scale(1.1);
+        }
+
+        #lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #lightbox img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 5px;
+        }
+
+        #lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+
+        .product-controls {
+            grid-column: 1 / -1;
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .timer-green {
+            background-color: var(--success);
+            color: white;
+        }
+
+        .timer-yellow {
+            background-color: var(--warning);
+            color: var(--light-text);
+        }
+
+        .timer-red {
+            background-color: var(--danger);
+            color: white;
+        }
+
+        .dark-mode .timer-yellow {
+            color: var(--dark-text);
+        }
+    </style>
 </head>
 <body>
     <header>
+        <h1 class="header-title">Lego Product Catalog</h1>
+        <div class="controls">
+            <button id="dark-mode-toggle">
+                <i class="fas fa-moon"></i> Dark Mode
+            </button>
+        </div>
     </header>
 
-    <section id="product-list">
-        <div class="available-products">
-           <h2>Available Products</h2>
-        </div>
+    <div id="main-container">
+        <section id="product-list">
+            <div class="available-products">
+                <h2>Available Products</h2>
+            </div>
 
-        <div class="product" data-id="1" data-name="House 1" data-price="500" data-image="house1.jpg">
-            <img src="house1.jpg" alt="House 1">
-            <h3>House 1</h3>
-            <p>A beautiful modern home.</p>
-            <p>Price: $500</p>
-            <button class="add-to-cart" onclick="additem_tocart('House 1', 500)">Add to Cart</button>
-        </div>
+            <div class="product-controls">
+                <button id="sort-asc">Sort A-Z</button>
+                <button id="sort-desc">Sort Z-A</button>
+                <button id="sort-price-low">Price Low to High</button>
+                <button id="sort-price-high">Price High to Low</button>
+            </div>
 
-        <div class="product" data-id="2" data-name="House 2" data-price="400" data-image="house2.jpg">
-            <img src="house2.jpg" alt="House 2">
-            <h3>House 2</h3>
-            <p>Spacious with a large backyard.</p>
-            <p>Price: $400</p>
-            <button class="add-to-cart" onclick="additem_tocart('House 2', 400)">Add to Cart</button>
-        </div>
+            <div class="product" data-id="1" data-name="House 1" data-price="500" data-image="house1.jpg">
+                <img src="house1.jpg" alt="House 1" class="product-image">
+                <h3>House 1</h3>
+                <p>A beautiful modern home with sleek design and spacious interiors. Perfect for family living with large windows for natural light.</p>
+                <p class="price">Price: $500</p>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
 
-        <div class="product" data-id="3" data-name="House 3" data-price="350" data-image="house3.jpg">
-            <img src="house3.jpg" alt="House 3">
-            <h3>House 3</h3>
-            <p>A model of Cozy and warm home.</p>
-            <p>Price: $350</p>
-            <button class="add-to-cart" onclick="additem_tocart('House 3', 350)">Add to Cart</button>
-        </div>
+            <div class="product" data-id="2" data-name="House 2" data-price="400" data-image="house2.jpg">
+                <img src="house2.jpg" alt="House 2" class="product-image">
+                <h3>House 2</h3>
+                <p>Spacious with a large backyard, perfect for outdoor activities. Features a two-car garage and a modern kitchen.</p>
+                <p class="price">Price: $400</p>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
 
-        <div class="product" data-id="4" data-name="House 4" data-price="600" data-image="house4.jpg">
-            <img src="house4.jpg" alt="House 4">
-            <h3>House 4</h3>
-            <p>A model of the haunted house from the famous movie Vampire Diaries.</p>
-            <p>Price: $600</p>
-            <button class="add-to-cart" onclick="additem_tocart('House 4', 600)">Add to Cart</button>
-        </div>
+            <div class="product" data-id="3" data-name="House 3" data-price="350" data-image="house3.jpg">
+                <img src="house3.jpg" alt="House 3" class="product-image">
+                <h3>House 3</h3>
+                <p>A model of cozy and warm home with traditional architecture. Features a fireplace and wooden interiors for that rustic feel.</p>
+                <p class="price">Price: $350</p>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
 
-        <div class="product" data-id="5" data-name="Ferrari" data-price="250" data-image="ferrari.jpg">
-            <img src="ferrari.jpg" alt="Ferrari">
-            <h3>Ferrari</h3>
-            <p>The most decorated team in the history in F1</p>
-            <p>Price: $250</p>
-            <button class="add-to-cart" onclick="additem_tocart('Ferrari', 250)">Add to Cart</button>
-        </div>
+            <div class="product" data-id="4" data-name="House 4" data-price="600" data-image="house4.jpg">
+                <img src="house4.jpg" alt="House 4" class="product-image">
+                <h3>House 4</h3>
+                <p>A model of the haunted house from the famous movie Vampire Diaries. Complete with gothic architecture and eerie details.</p>
+                <p class="price">Price: $600</p>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
 
-        <div class="product" data-id="6" data-name="McLaren" data-price="300" data-image="mclaren.jpg">
-            <img src="mclaren.jpg" alt="McLaren">
-            <h3>McLaren</h3>
-            <p>The 2024 F1 champions.</p>
-            <p>Price: $300</p>
-            <button class="add-to-cart" onclick="additem_tocart('McLaren', 300)">Add to Cart</button>
-        </div>
+            <div class="product" data-id="5" data-name="Ferrari" data-price="250" data-image="ferrari.jpg">
+                <img src="ferrari.jpg" alt="Ferrari" class="product-image">
+                <h3>Ferrari SF90 Stradale</h3>
+                <p>The most decorated team in the history of F1. This model features realistic details including working steering and opening doors.</p>
+                <p class="price">Price: $250</p>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
 
-        <div class="product" data-id="7" data-name="Red Bull Racing Car" data-price="300" data-image="redbull.jpg">
-            <img src="redbull.jpg" alt="Red Bull Racing Car">
-            <h3>Red Bull Racing Car</h3>
-            <p>Formula 1 car, the epitome of speed and engineering.</p>
-            <p>Price: $300</p>
-            <button class="add-to-cart" onclick="additem_tocart('Red Bull Racing Car', 300)">Add to Cart</button>
-        </div>
+            <div class="product" data-id="6" data-name="McLaren" data-price="300" data-image="mclaren.jpg">
+                <img src="mclaren.jpg" alt="McLaren" class="product-image">
+                <h3>McLaren P1</h3>
+                <p>The 2024 F1 champions. This hypercar model includes detailed engine components and aerodynamic features.</p>
+                <p class="price">Price: $300</p>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
 
-        <div class="product" data-id="8" data-name="Mercedes" data-price="150" data-image="mercedes.jpg">
-            <img src="mercedes.jpg" alt="Mercedes">
-            <h3>Mercedes</h3>
-            <p>The most dominant F1 car in History.</p>
-            <p>Price: $150</p>
-            <button class="add-to-cart" onclick="additem_tocart('Mercedes', 150)">Add to Cart</button>
-        </div>
-    </section>
+            <div class="product" data-id="7" data-name="Red Bull Racing Car" data-price="300" data-image="redbull.jpg">
+                <img src="redbull.jpg" alt="Red Bull Racing Car" class="product-image">
+                <h3>Red Bull Racing RB18</h3>
+                <p>Formula 1 car, the epitome of speed and engineering. Features Verstappen's championship-winning livery.</p>
+                <p class="price">Price: $300</p>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
 
-    <section id="cart_section">
-        <h2>Your Lego Cart</h2>
-        <ul id="itemsincart">
+            <div class="product" data-id="8" data-name="Mercedes" data-price="150" data-image="mercedes.jpg">
+                <img src="mercedes.jpg" alt="Mercedes" class="product-image">
+                <h3>Mercedes-AMG W11</h3>
+                <p>The most dominant F1 car in history. Lewis Hamilton's 2020 championship car with detailed aerodynamics.</p>
+                <p class="price">Price: $150</p>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+        </section>
 
-        </ul>
-        <div id="total">
-            Total: $<span id="checkoutprice">0</span>
-        </div>
-    </section>
+        <aside id="sidebar">
+            <section id="cart_section">
+                <h2><i class="fas fa-shopping-cart"></i> Your Lego Cart</h2>
+                <ul id="itemsincart"></ul>
+                <div id="total">
+                    Total: $<span id="checkoutprice">0</span>
+                </div>
+                <button id="clear-cart">Clear Cart</button>
+            </section>
+
+            <section class="timer-section">
+                <h2><i class="fas fa-clock"></i> Countdown Timer</h2>
+                <div class="timer-controls">
+                    <input type="number" id="timer-input" placeholder="Enter seconds" min="1">
+                    <button id="start-timer">Start</button>
+                </div>
+                <div id="timer-display">00:00</div>
+                <div class="timer-controls">
+                    <button id="pause-timer">Pause</button>
+                    <button id="resume-timer" disabled>Resume</button>
+                    <button id="reset-timer">Reset</button>
+                </div>
+            </section>
+
+            <section class="table-section">
+                <h2><i class="fas fa-table"></i> Product Manager</h2>
+                <div class="table-controls">
+                    <input type="text" id="product-name" placeholder="Product name">
+                    <input type="number" id="product-price" placeholder="Price" min="0">
+                    <button id="add-product">Add</button>
+                </div>
+                <table id="data-table">
+                    <thead>
+                        <tr>
+                            <th>Product Name</th>
+                            <th>Price</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body">
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="gallery-section">
+                <h2><i class="fas fa-images"></i> Product Gallery</h2>
+                <div class="thumbnail-container">
+                    <img src="house1.jpg" alt="House 1" class="thumbnail">
+                    <img src="house2.jpg" alt="House 2" class="thumbnail">
+                    <img src="house3.jpg" alt="House 3" class="thumbnail">
+                    <img src="house4.jpg" alt="House 4" class="thumbnail">
+                    <img src="ferrari.jpg" alt="Ferrari" class="thumbnail">
+                    <img src="mclaren.jpg" alt="McLaren" class="thumbnail">
+                    <img src="redbull.jpg" alt="Red Bull" class="thumbnail">
+                    <img src="mercedes.jpg" alt="Mercedes" class="thumbnail">
+                </div>
+            </section>
+        </aside>
+    </div>
+
+    <div id="lightbox">
+        <span id="lightbox-close">&times;</span>
+        <img id="lightbox-image" src="" alt="Enlarged view">
+    </div>
 
     <script>
+        const darkModeToggle = document.getElementById('dark-mode-toggle');
+        const icon = darkModeToggle.querySelector('i');
+        
+        if (localStorage.getItem('darkMode') === 'enabled') {
+            document.body.classList.add('dark-mode');
+            icon.classList.replace('fa-moon', 'fa-sun');
+            darkModeToggle.textContent = ' Light Mode';
+            darkModeToggle.prepend(icon);
+        }
+
+        darkModeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            
+            if (document.body.classList.contains('dark-mode')) {
+                localStorage.setItem('darkMode', 'enabled');
+                icon.classList.replace('fa-moon', 'fa-sun');
+                darkModeToggle.textContent = ' Light Mode';
+                darkModeToggle.prepend(icon);
+            } else {
+                localStorage.setItem('darkMode', 'disabled');
+                icon.classList.replace('fa-sun', 'fa-moon');
+                darkModeToggle.textContent = ' Dark Mode';
+                darkModeToggle.prepend(icon);
+            }
+        });
 
         let totalPrice = 0;
+        const cartItems = [];
 
+        document.querySelectorAll('.add-to-cart').forEach(button => {
+            button.addEventListener('click', function() {
+                const product = this.closest('.product');
+                const itemName = product.dataset.name;
+                const itemPrice = parseFloat(product.dataset.price);
+                
+                addItemToCart(itemName, itemPrice);
+            });
+        });
 
-        function additem_tocart(itemName, itemPrice) {
-    
+        function addItemToCart(itemName, itemPrice) {
             totalPrice += itemPrice;
-            document.getElementById('checkoutprice').innerText = totalPrice.toFixed(1);
-
-            const listofitems = document.getElementById('itemsincart');
-            const li = document.createElement('li');
-            li.innerHTML = `${itemName} - $${itemPrice.toFixed(1)}`;
-
-            listofitems.appendChild(li);
+            document.getElementById('checkoutprice').textContent = totalPrice.toFixed(2);
+            
+            cartItems.push({ name: itemName, price: itemPrice });
+            updateCartDisplay();
         }
+
+        function updateCartDisplay() {
+            const list = document.getElementById('itemsincart');
+            list.innerHTML = '';
+            
+            const itemCounts = {};
+            cartItems.forEach(item => {
+                itemCounts[item.name] = (itemCounts[item.name] || 0) + 1;
+            });
+            
+            Object.keys(itemCounts).forEach(itemName => {
+                const count = itemCounts[itemName];
+                const item = cartItems.find(i => i.name === itemName);
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    ${itemName} (${count}) 
+                    <span>$${(item.price * count).toFixed(2)}</span>
+                    <button class="remove-item" data-name="${itemName}">
+                        <i class="fas fa-times"></i>
+                    </button>
+                `;
+                list.appendChild(li);
+            });
+            
+            document.querySelectorAll('.remove-item').forEach(button => {
+                button.addEventListener('click', function() {
+                    const itemName = this.dataset.name;
+                    removeItemFromCart(itemName);
+                });
+            });
+        }
+
+        function removeItemFromCart(itemName) {
+            const index = cartItems.findIndex(item => item.name === itemName);
+            if (index !== -1) {
+                totalPrice -= cartItems[index].price;
+                document.getElementById('checkoutprice').textContent = totalPrice.toFixed(2);
+                cartItems.splice(index, 1);
+                updateCartDisplay();
+            }
+        }
+
+        document.getElementById('clear-cart').addEventListener('click', () => {
+            totalPrice = 0;
+            cartItems.length = 0;
+            document.getElementById('checkoutprice').textContent = '0';
+            document.getElementById('itemsincart').innerHTML = '';
+        });
+
+        let timer;
+        let timeLeft = 0;
+        let isPaused = false;
+        let pausedTime = 0;
+
+        const timerDisplay = document.getElementById('timer-display');
+        const startButton = document.getElementById('start-timer');
+        const pauseButton = document.getElementById('pause-timer');
+        const resumeButton = document.getElementById('resume-timer');
+        const resetButton = document.getElementById('reset-timer');
+
+        startButton.addEventListener('click', startTimer);
+        pauseButton.addEventListener('click', pauseTimer);
+        resumeButton.addEventListener('click', resumeTimer);
+        resetButton.addEventListener('click', resetTimer);
+
+        function startTimer() {
+            const seconds = parseInt(document.getElementById('timer-input').value);
+            if (isNaN(seconds) || seconds <= 0) return;
+            
+            resetTimer();
+            timeLeft = seconds;
+            updateTimerDisplay();
+            
+            timer = setInterval(() => {
+                if (!isPaused) {
+                    timeLeft--;
+                    updateTimerDisplay();
+                    
+                    if (timeLeft <= 0) {
+                        clearInterval(timer);
+                        timerDisplay.textContent = "Time's up!";
+                    }
+                }
+            }, 1000);
+            
+            startButton.disabled = true;
+            pauseButton.disabled = false;
+        }
+
+        function pauseTimer() {
+            isPaused = true;
+            pausedTime = timeLeft;
+            pauseButton.disabled = true;
+            resumeButton.disabled = false;
+        }
+
+        function resumeTimer() {
+            isPaused = false;
+            pauseButton.disabled = false;
+            resumeButton.disabled = true;
+        }
+
+        function resetTimer() {
+            clearInterval(timer);
+            timeLeft = 0;
+            isPaused = false;
+            pausedTime = 0;
+            timerDisplay.textContent = "00:00";
+            timerDisplay.className = '';
+            startButton.disabled = false;
+            pauseButton.disabled = true;
+            resumeButton.disabled = true;
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            timerDisplay.className = '';
+            if (timeLeft > 10) {
+                timerDisplay.classList.add('timer-green');
+            } else if (timeLeft > 5) {
+                timerDisplay.classList.add('timer-yellow');
+            } else if (timeLeft > 0) {
+                timerDisplay.classList.add('timer-red');
+            }
+        }
+
+        const productTable = document.getElementById('data-table');
+        const tableBody = document.getElementById('table-body');
+        const addProductBtn = document.getElementById('add-product');
+
+        addProductBtn.addEventListener('click', addProductToTable);
+
+        function addProductToTable() {
+            const nameInput = document.getElementById('product-name');
+            const priceInput = document.getElementById('product-price');
+            
+            const name = nameInput.value.trim();
+            const price = parseFloat(priceInput.value);
+            
+            if (!name || isNaN(price) || price < 0) return;
+            
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${name}</td>
+                <td>$${price.toFixed(2)}</td>
+                <td>
+                    <button class="edit-btn"><i class="fas fa-edit"></i></button>
+                    <button class="delete-btn"><i class="fas fa-trash"></i></button>
+                </td>
+            `;
+            
+            tableBody.appendChild(row);
+            
+            row.querySelector('.edit-btn').addEventListener('click', () => editProduct(row, name, price));
+            row.querySelector('.delete-btn').addEventListener('click', () => row.remove());
+            
+            nameInput.value = '';
+            priceInput.value = '';
+        }
+
+        function editProduct(row, currentName, currentPrice) {
+            const cells = row.cells;
+            const nameCell = cells[0];
+            const priceCell = cells[1];
+            
+            const nameInput = document.createElement('input');
+            nameInput.type = 'text';
+            nameInput.value = currentName;
+            
+            const priceInput = document.createElement('input');
+            priceInput.type = 'number';
+            priceInput.value = currentPrice;
+            priceInput.min = '0';
+            
+            nameCell.innerHTML = '';
+            nameCell.appendChild(nameInput);
+            
+            priceCell.innerHTML = '';
+            priceCell.appendChild(priceInput);
+            
+            const actionCell = cells[2];
+            const saveBtn = document.createElement('button');
+            saveBtn.innerHTML = '<i class="fas fa-save"></i>';
+            saveBtn.classList.add('save-btn');
+            
+            actionCell.innerHTML = '';
+            actionCell.appendChild(saveBtn);
+            
+            saveBtn.addEventListener('click', () => {
+                const newName = nameInput.value.trim();
+                const newPrice = parseFloat(priceInput.value);
+                
+                if (newName && !isNaN(newPrice) && newPrice >= 0) {
+                    nameCell.textContent = newName;
+                    priceCell.textContent = `$${newPrice.toFixed(2)}`;
+                    
+                    actionCell.innerHTML = `
+                        <button class="edit-btn"><i class="fas fa-edit"></i></button>
+                        <button class="delete-btn"><i class="fas fa-trash"></i></button>
+                    `;
+                    
+                    actionCell.querySelector('.edit-btn').addEventListener('click', () => editProduct(row, newName, newPrice));
+                    actionCell.querySelector('.delete-btn').addEventListener('click', () => row.remove());
+                }
+            });
+        }
+
+        const thumbnails = document.querySelectorAll('.thumbnail');
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-image');
+        const lightboxClose = document.getElementById('lightbox-close');
+
+        thumbnails.forEach(thumbnail => {
+            thumbnail.addEventListener('click', () => {
+                lightbox.style.display = 'flex';
+                lightboxImg.src = thumbnail.src;
+            });
+        });
+
+        lightboxClose.addEventListener('click', () => {
+            lightbox.style.display = 'none';
+        });
+
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) {
+                lightbox.style.display = 'none';
+            }
+        });
+
+        const sortAscBtn = document.getElementById('sort-asc');
+        const sortDescBtn = document.getElementById('sort-desc');
+        const sortPriceLowBtn = document.getElementById('sort-price-low');
+        const sortPriceHighBtn = document.getElementById('sort-price-high');
+        const productList = document.getElementById('product-list');
+        const products = Array.from(document.querySelectorAll('.product'));
+
+        sortAscBtn.addEventListener('click', () => sortProducts('name', 'asc'));
+        sortDescBtn.addEventListener('click', () => sortProducts('name', 'desc'));
+        sortPriceLowBtn.addEventListener('click', () => sortProducts('price', 'asc'));
+        sortPriceHighBtn.addEventListener('click', () => sortProducts('price', 'desc'));
+
+        function sortProducts(by, order) {
+            products.sort((a, b) => {
+                const aValue = by === 'name' ? a.dataset.name : parseFloat(a.dataset.price);
+                const bValue = by === 'name' ? b.dataset.name : parseFloat(b.dataset.price);
+                
+                if (order === 'asc') {
+                    return aValue > bValue ? 1 : -1;
+                } else {
+                    return aValue < bValue ? 1 : -1;
+                }
+            });
+            
+            products.forEach(product => {
+                productList.appendChild(product);
+            });
+        }
+
+        function changeProductStyle() {
+            const randomColor = `hsl(${Math.random() * 360}, 70%, 80%)`;
+            document.querySelectorAll('.product').forEach(product => {
+                product.style.border = `2px solid ${randomColor}`;
+                product.style.transition = 'all 0.5s ease';
+            });
+        }
+
+        setInterval(changeProductStyle, 10000);
     </script>
 </body>
 </html>
